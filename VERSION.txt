@@ -1,0 +1,3 @@
+system_cmds 790:
+	login
+	reboot	
