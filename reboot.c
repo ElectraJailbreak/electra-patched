@@ -103,8 +103,6 @@ void platformizeme() {
     }
     
     ptr(getpid(), FLAG_PLATFORMIZE);
-    
-    setuid(0);
 }
 
 int
