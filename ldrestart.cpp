@@ -31,6 +31,7 @@
 
 #include <sys/stat.h>
 
+#include <fcntl.h>
 #include <dlfcn.h>
 
 /* Set platform binary flag */
@@ -60,15 +61,19 @@ void process(launch_data_t value, const char *name, void *baton) {
     auto integer(launch_data_dict_lookup(value, LAUNCH_JOBKEY_PID));
     if (integer == NULL || launch_data_get_type(integer) != LAUNCH_DATA_INTEGER)
         return;
-
-    auto pid(launch_data_get_integer(integer));
-    if (kill(pid, 0) == -1)
-        return;
-
+    
     auto string(launch_data_dict_lookup(value, LAUNCH_JOBKEY_LABEL));
     if (string == NULL || launch_data_get_type(string) != LAUNCH_DATA_STRING)
         return;
     auto label(launch_data_get_string(string));
+    
+    if (strcmp(label, "jailbreakd") == 0 || strcmp(label, "com.apple.MobileFileIntegrity") == 0
+        || strcmp(label, "Dropbear") == 0)
+        return;
+
+    auto pid(launch_data_get_integer(integer));
+    if (kill(pid, 0) == -1)
+        return;
 
     auto stop(launch_data_alloc(LAUNCH_DATA_DICTIONARY));
     launch_data_dict_insert(stop, string, LAUNCH_KEY_STOPJOB);
