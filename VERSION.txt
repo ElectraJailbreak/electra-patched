@@ -1,3 +1,5 @@
+Note: set HAVE_FUTIMENS=0 for iOS 10 support
+
 coreutils 8.18:
 	su (removed in future versions of coreutils)
 system_cmds 790:
